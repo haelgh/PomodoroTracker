@@ -66,7 +66,7 @@
             <TextBox Style="{StaticResource TextBoxStyle}" MaxLength="20" Width="340" x:Name="task2Add"/>
             <TextBox  Style="{StaticResource TextBoxStyle}" Width="50" MaxLength="2" PreviewTextInput="NumberValidationTextBox" x:Name="poms" />
             <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right" Command="New" >
-                <Image Source="D:\projects\PomodoroTracker\PomodoroTracker\imgs\pomodor.png"/>
+                <Image Source="https://cdn-icons-png.flaticon.com/512/135/135702.png"/>
             </Button>
         </StackPanel>
 

@@ -22,7 +22,10 @@ namespace PomodoroTracker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DispatcherTimer tmr = new DispatcherTimer();
+        private DispatcherTimer _timer;
+        private static int timeLeft = 25;
+        private static TimeSpan _time = TimeSpan.FromMinutes(timeLeft);
+        
         private int taskNum = 0;
         public MainWindow()
         {
@@ -31,11 +34,6 @@ namespace PomodoroTracker
             CommandBindings.Add(addTaskCommand);
             CommandBinding eraseCommand = new CommandBinding(ApplicationCommands.Delete, execute_Delete);
             CommandBindings.Add(eraseCommand);
-
-
-            tmr.Interval = TimeSpan.FromSeconds(1);
-            tmr.Tick -= Timer_Tick;
-
         }
 
         private void execute_Delete(object sender, ExecutedRoutedEventArgs e)
@@ -86,19 +84,24 @@ namespace PomodoroTracker
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            timer.Text = poms.Text;
-        }
-
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            tmr.Start();
+
+            int.TryParse(timer.Text, out timeLeft);
+            timer.Text = timeLeft.ToString();
+            
+            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+            {
+                timer.Text = _time.ToString(@"mm\:ss");
+                if (_time == TimeSpan.Zero) _timer.Stop();
+                _time = _time.Add(TimeSpan.FromSeconds(-1));
+            }, Application.Current.Dispatcher);
+            _timer.Start();
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            tmr.Stop();
+            _timer.Stop();
         }
     }
 }
